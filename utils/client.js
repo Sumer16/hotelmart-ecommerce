@@ -1,9 +1,11 @@
-import client from '@sanity/client';
+import sanityClient from '@sanity/client';
 
 import config from './config';
 
-export default client({
-    projectId: config.projectId,
-    dataset: config.dataset,
-    useCdn: true
+const client = sanityClient({
+  projectId: config.projectId,
+  dataset: config.dataset,
+  useCdn: true
 });
+
+export default client;

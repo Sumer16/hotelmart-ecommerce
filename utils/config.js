@@ -1,6 +1,6 @@
 const config = {
-    projectId: 'urc84mnc',
-    dataset: 'production'
+  projectId: 'urc84mnc',
+  dataset: 'production'
 };
 
 export default config;

@@ -3,8 +3,14 @@ const classes = {
     marginTop: 2,
     minHeight: '80vh',
   },
+  section: {
+    marginTop: '1rem',
+    marginBottom: '1rem',
+    display: 'flex',
+  },
   footer: {
-    marginTop: 1,
+    marginTop: 3,
+    marginBottom: 2,
     textAlign: 'center',
   },
   appbar: {
@@ -20,6 +26,10 @@ const classes = {
   brand: {
     fontWeight: 'bold',
     fontSize: '1.5rem',
+  },
+  brandName: {
+    fontWeight: 'bold',
+    fontSize: '14px',
   },
 }
 

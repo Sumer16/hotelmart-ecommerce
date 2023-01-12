@@ -12,6 +12,8 @@ import {
   Typography 
 } from '@mui/material';
 
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+
 import { urlForThumbnail } from '../utils/image';
 
 export default function ProductItem({ product }) {
@@ -30,10 +32,10 @@ export default function ProductItem({ product }) {
           </CardContent>
         </CardActionArea>
       </NextLink>
-      <CardActions>
-        <Typography>${product.price}</Typography>
+      <CardActions sx={{ display: 'flex', justifyContent: 'space-around' }}>
+        <Typography sx={{ fontSize: '1.2rem' }}>${product.price}</Typography>
         <Button size="small" color="primary">
-          Add to Cart
+          Add to Cart <AddShoppingCartIcon />
         </Button>
       </CardActions>
     </Card>
