@@ -1,8 +1,30 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+# Relay Ecommerce
+
 ## Getting Started
 
-First, run the development server:
+### Clone the Repository
+
+To get started, you'll need to clone this repository to your local machine. You can do this by running the following in the command line:
+
+```bash 
+git clone https://github.com/Sumer16/ecommerce-website.git 
+```
+
+### Install dependencies
+
+Once you've cloned the repository, navigate to the project directory and run npm/yarn install to install all the necessary dependencies.
+
+```bash
+npm install
+# or
+yarn install
+```
+
+### Run the development server
+
+After the dependencies have been installed, you can start the development server by running:
 
 ```bash
 npm run dev
@@ -10,15 +32,9 @@ npm run dev
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+This will start the server at `http://localhost:3000`, and you can view the website in your browser.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Open [`http://localhost:3000`](http://localhost:3000) with your browser to see the result.
 
 ## Learn More
 
