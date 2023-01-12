@@ -1,5 +1,7 @@
 import React from 'react';
+
 import Document, { Html, Head, Main, NextScript } from 'next/document';
+
 import createEmotionServer from '@emotion/server/create-instance';
 import createCache from '@emotion/cache';
 
@@ -52,5 +54,3 @@ MyDocument.getInitialProps = async (ctx) => {
     ],
   }
 }
-
-// Changed the way that we render the document
