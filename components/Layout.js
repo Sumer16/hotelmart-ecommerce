@@ -61,7 +61,7 @@ export default function Layout({ title, description, children }) {
           <Toolbar sx={classes.toolbar}>
             <NextLink href="/" passHref>
               <Link>
-                <Typography sx={classes.brand}>Relay RoboCommerce</Typography>
+                <Typography sx={classes.brand}>Relay ECommerce</Typography>
               </Link>
             </NextLink>
           </Toolbar>
