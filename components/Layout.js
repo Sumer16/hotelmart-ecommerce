@@ -1,6 +1,8 @@
 import Head from 'next/head';
 import NextLink from 'next/link';
 
+import { useContext } from 'react';
+
 import { createTheme } from '@mui/material/styles';
 import {
   ThemeProvider,
@@ -10,12 +12,18 @@ import {
   Link,
   Typography,
   Container,
-  Box
+  Box,
+  Switch
 } from '@mui/material';
 
 import classes from '../utils/classes';
+import { Store } from '../utils/Store';
+import jsCookies from 'js-cookie';
 
 export default function Layout({ title, description, children }) {
+  const { state, dispatch } = useContext(Store);
+  const { darkMode } = state;
+
   const theme = createTheme({
     components: {
       MuiLink: {
@@ -37,15 +45,21 @@ export default function Layout({ title, description, children }) {
       },
     },
     palette: {
-      mode: 'light',
+      mode: darkMode ? 'dark' : 'light',
       primary: {
-        main: '#f0c000',
+        main: '#006BB8',
       },
       secondary: {
         main: '#208080',
       },
     },
   });
+
+  const changeDarkModeHandler = () => {
+    dispatch({ type: darkMode ? 'DARK_MODE_OFF' : 'DARK_MODE_ON' });
+    const enableDarkMode = !darkMode;
+    jsCookies.set('darkMode', enableDarkMode ? 'ON' : 'OFF');
+  }
 
   return (
     <>
@@ -59,11 +73,16 @@ export default function Layout({ title, description, children }) {
         <CssBaseline />
         <AppBar position="static" sx={classes.appbar}>
           <Toolbar sx={classes.toolbar}>
-            <NextLink href="/" passHref>
-              <Link>
-                <Typography sx={classes.brand}>Relay ECommerce</Typography>
-              </Link>
-            </NextLink>
+            <Box display="flex" alignItems="center">
+              <NextLink href="/" passHref>
+                <Link>
+                  <Typography sx={classes.brand}>Relay ECommerce</Typography>
+                </Link>
+              </NextLink>
+            </Box>
+            <Box>
+              <Switch checked={darkMode} onChange={changeDarkModeHandler}></Switch>
+            </Box>
           </Toolbar>
         </AppBar>
         <Container component="main" sx={classes.main}>{children}</Container>
