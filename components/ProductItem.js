@@ -18,12 +18,12 @@ import { urlForThumbnail } from '../utils/image';
 
 export default function ProductItem({ product }) {
   return (
-    <Card>
+    <Card key={product._id}>
       <NextLink href={`/product/${product.slug.current}`} passHref>
         <CardActionArea>
-          <CardMedia 
-            component="img" 
-            image={urlForThumbnail(product.image)} 
+          <CardMedia
+            component="img"
+            image={urlForThumbnail(product.image)}
             title={product.name}
           >
           </CardMedia>

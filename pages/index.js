@@ -20,6 +20,7 @@ export default function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        /* https://sanity.io/docs/how-queries-work */
         const products = await client.fetch(`*[_type == "product"]`); // Sanity Client
         setState({products, loading: false});
       } catch (err) {
@@ -33,8 +34,8 @@ export default function Home() {
     {loading ? (<CircularProgress />) 
       : error ? (<Alert variant="danger">{error}</Alert>) 
       : (<Grid container spacing={3}>
-        {products.map((product) => (
-          <Grid item md={4} key={product.slug}>
+        {products.map((product, index) => (
+          <Grid item md={4} key={index}>
             <ProductItem product={product}></ProductItem>
           </Grid>
         ))}

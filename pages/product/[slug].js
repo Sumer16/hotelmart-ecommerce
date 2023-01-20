@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import NextLink from 'next/link';
 import Image from 'next/image';
+
+import { useSnackbar } from 'notistack';
+import axios from 'axios';
 
 import { 
   Alert, 
@@ -25,10 +28,18 @@ import Layout from '../../components/Layout';
 
 import client from '../../utils/client';
 import classes from '../../utils/classes';
-import { urlFor } from '../../utils/image';
+import { urlFor, urlForThumbnail } from '../../utils/image';
+import { Store } from '../../utils/Store';
 
 export default function ProductScreen(props) {
     const { slug } = props;
+    
+    const { 
+      state: {cart}, 
+      dispatch 
+    } = useContext(Store);
+    
+    const { enqueueSnackbar } = useSnackbar();
     
     const [ state, setState ] = useState({
         product: null, // from sanity
@@ -50,7 +61,37 @@ export default function ProductScreen(props) {
             }
         };
         fetchData();
-    }, [setState, slug, state]);
+    }, []);
+
+    const addToCartHandler = async () => {
+      // Check for existing item
+      const existItem = cart.cartItems.find((item) => item._id === product._id);
+      // If user selected same instance of a product and add to cart we check if they are different
+      // If not different we add one by default
+      const quantity = existItem ? existItem.quantity + 1 : 1;
+      const { data } = await axios.get(`/api/products/${product._id}`);
+      console.log(data);
+
+      if(data.countInStock < quantity) {
+        enqueueSnackbar('Sorry, at this moment this product is out of stock', { variant: 'error' });
+        return;
+      }
+      
+      dispatch({ 
+        type: 'CART_ADD_ITEM', 
+        payload: {
+          _key: product._id,
+          name: product.name,
+          slug: product.slug.current, // Since we want text not slug object
+          price: product.price,
+          countInStock: product.countInStock,
+          image: urlForThumbnail(product.image),
+          quantity,
+        },
+      });
+
+      enqueueSnackbar(`${product.name} added to the cart`, { variant: 'success' });
+    }
 
     return (
         // If product is null, don't give an error just use null
@@ -99,11 +140,11 @@ export default function ProductScreen(props) {
                       <ListItem>
                           <Grid container>
                             <Grid item xs={6}>
-                              <Typography>${product.price}</Typography>
+                              <Typography component={'span'}>Price: ${product.price}</Typography>
                             </Grid>
                           </Grid>
                           <Grid item xs={6}>
-                              <Typography>
+                              <Typography component={'span'}>
                                 {product.countInStock > 0 ? 
                                   (<Typography sx={{ fontWeight: 'bold', color: 'green' }}>In stock</Typography>)
                                 : (<Typography sx={{ fontWeight: 'bold', color: 'red' }}>Unavailable</Typography>)}
@@ -112,7 +153,7 @@ export default function ProductScreen(props) {
                         </ListItem>
                         <ListItem>
                           <Grid item xs={12} md={6}>
-                            <Button fullWidth variant='contained'>
+                            <Button onClick={addToCartHandler} fullWidth variant="contained">
                               Add To Cart <AddShoppingCartIcon />
                             </Button>
                           </Grid>
@@ -125,6 +166,9 @@ export default function ProductScreen(props) {
         </Layout>
     );
 }
+
+/* Why I used component={span} in Typography:
+https://stackoverflow.com/questions/41928567/div-cannot-appear-as-a-descendant-of-p */
 
 export function getServerSideProps(context) {
     return {
