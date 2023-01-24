@@ -51,7 +51,7 @@ export default function Home() {
     const { data } = await axios.get(`/api/products/${product._id}`);
     
     if (product.countInStock < quantity) {
-      enqueueSnackbar('Sorry. Product is out of stock', { variant: 'error' });
+      enqueueSnackbar('Sorry, this product is out of stock', { variant: 'error' });
       return;
     }
     dispatch({
