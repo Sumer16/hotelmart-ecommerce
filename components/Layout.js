@@ -13,8 +13,12 @@ import {
   Typography,
   Container,
   Box,
-  Switch
+  Switch,
+  Badge,
+  IconButton
 } from '@mui/material';
+
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 import classes from '../utils/classes';
 import { Store } from '../utils/Store';
@@ -22,7 +26,7 @@ import jsCookies from 'js-cookie';
 
 export default function Layout({ title, description, children }) {
   const { state, dispatch } = useContext(Store);
-  const { darkMode } = state;
+  const { darkMode, cart } = state;
 
   const theme = createTheme({
     components: {
@@ -47,10 +51,10 @@ export default function Layout({ title, description, children }) {
     palette: {
       mode: darkMode ? 'dark' : 'light',
       primary: {
-        main: '#006BB8',
+        main: '#1c99d5',
       },
       secondary: {
-        main: '#1c99d5',
+        main: '#006BB8',
       },
     },
   });
@@ -81,7 +85,16 @@ export default function Layout({ title, description, children }) {
               </NextLink>
             </Box>
             <Box>
-              <Switch checked={darkMode} onChange={changeDarkModeHandler}></Switch>
+              <NextLink href="/cart" passHref>
+                <Link>
+                  <IconButton sx={{ mx:0.8 }}>
+                    {cart.cartItems.length > 0 ? (
+                      <Badge color="secondary" badgeContent={cart.cartItems.length}><ShoppingCartIcon /></Badge>
+                    ) : (<ShoppingCartIcon />)}  
+                  </IconButton>  
+                </Link>
+              </NextLink>
+              <Switch checked={darkMode} onChange={changeDarkModeHandler} color="secondary"></Switch>
             </Box>
           </Toolbar>
         </AppBar>

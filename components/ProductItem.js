@@ -16,7 +16,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 import { urlForThumbnail } from '../utils/image';
 
-export default function ProductItem({ product }) {
+export default function ProductItem({ product, addToCartHandler }) {
   return (
     <Card key={product._id}>
       <NextLink href={`/product/${product.slug.current}`} passHref>
@@ -34,7 +34,7 @@ export default function ProductItem({ product }) {
       </NextLink>
       <CardActions sx={{ display: 'flex', justifyContent: 'space-around' }}>
         <Typography sx={{ fontSize: '1.2rem' }}>${product.price}</Typography>
-        <Button size="small" color="primary">
+        <Button size="small" color="primary" onClick={() => addToCartHandler(product)}>
           Add to Cart <AddShoppingCartIcon />
         </Button>
       </CardActions>

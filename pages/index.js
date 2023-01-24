@@ -1,15 +1,30 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
-import { Alert, CircularProgress, Grid, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
+
+import { useSnackbar } from 'notistack';
+import axios from 'axios';
+
+import { Alert, CircularProgress, Grid } from '@mui/material';
 
 import Layout from '../components/Layout';
-
-import client from '../utils/client';
 import ProductItem from '../components/ProductItem';
 
-export default function Home() {
+import client from '../utils/client';
+import { Store } from '../utils/Store';
+import { urlForThumbnail } from '../utils/image';
 
-  const [state, setState] = useState({
+export default function Home() {
+  const router = useRouter();
+
+  const {
+    state: { cart },
+    dispatch,
+  } = useContext(Store);
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  const [ state, setState ] = useState({
     products: [],
     error: '',
     loading: true,
@@ -30,13 +45,43 @@ export default function Home() {
     fetchData();
   }, []);
 
+  const addToCartHandler = async (product) => {
+    const existItem = cart.cartItems.find((item) => item._id === product._id);
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+    const { data } = await axios.get(`/api/products/${product._id}`);
+    
+    if (product.countInStock < quantity) {
+      enqueueSnackbar('Sorry. Product is out of stock', { variant: 'error' });
+      return;
+    }
+    dispatch({
+      type: 'CART_ADD_ITEM',
+      payload: {
+        _key: product._id,
+        name: product.name,
+        countInStock: product.countInStock,
+        slug: product.slug.current,
+        price: product.price,
+        image: urlForThumbnail(product.image),
+        quantity,
+      },
+    });
+    enqueueSnackbar(`${product.name} added to the cart`, {
+      variant: 'success',
+    });
+    router.push('/cart');
+  };
+
   return <Layout>
     {loading ? (<CircularProgress />) 
       : error ? (<Alert variant="danger">{error}</Alert>) 
-      : (<Grid container spacing={3}>
-        {products.map((product, index) => (
-          <Grid item md={4} key={index}>
-            <ProductItem product={product}></ProductItem>
+      : (<Grid container justifyContent="space-evenly" spacing={3}>
+        {products.map((product) => (
+          <Grid item md={4} key={product._id}>
+            <ProductItem 
+              product={product} 
+              addToCartHandler={addToCartHandler}
+            ></ProductItem>
           </Grid>
         ))}
         </Grid>)

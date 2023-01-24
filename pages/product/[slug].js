@@ -41,8 +41,6 @@ export default function ProductScreen(props) {
     dispatch
   } = useContext(Store);
 
-  console.log(cart);
-
   const { enqueueSnackbar } = useSnackbar();
 
   const [state, setState] = useState({
@@ -74,9 +72,8 @@ export default function ProductScreen(props) {
     // If not different we add one by default
     const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/${product._id}`);
-    console.log({data})
 
-    if (data.countInStock < quantity) {
+    if (product.countInStock < quantity) {
       enqueueSnackbar('Sorry, at this moment this product is out of stock', { variant: 'error' });
       return;
     }
