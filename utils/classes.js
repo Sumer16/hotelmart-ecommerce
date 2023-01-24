@@ -27,10 +27,6 @@ const classes = {
     fontWeight: 'bold',
     fontSize: '1.5rem',
   },
-  brandName: {
-    fontWeight: 'bold',
-    fontSize: '14px',
-  },
 }
 
 export default classes;

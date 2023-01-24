@@ -50,7 +50,7 @@ export default function Layout({ title, description, children }) {
         main: '#006BB8',
       },
       secondary: {
-        main: '#208080',
+        main: '#1c99d5',
       },
     },
   });
