@@ -94,7 +94,7 @@ export default function LoginScreen() {
             </Button>
           </ListItem>
           <ListItem sx={{ display: 'flex', flexWrap: 'wrap' }}>
-            <Typography marginRight={1}>Don't have an account?</Typography>
+            <Typography marginRight={1}>Don&apos;t have an account?</Typography>
             <NextLink href={'/register'} passHref>
               <Link>Create an account</Link>
             </NextLink>
