@@ -19,6 +19,8 @@ import {
 } from '@mui/material';
 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCartOutlined';
+import LoginIcon from '@mui/icons-material/Login';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import classes from '../utils/classes';
 import { Store } from '../utils/Store';
@@ -84,14 +86,21 @@ export default function Layout({ title, description, children }) {
                 </Link>
               </NextLink>
             </Box>
-            <Box>
+            <Box display="flex" flexWrap="wrap-reverse" justifyContent="center">
               <NextLink href="/cart" passHref>
                 <Link>
-                  <IconButton sx={{ mx:0.8 }}>
+                  <IconButton sx={{ marginRight: '6px' }}>
                     {cart.cartItems.length > 0 ? (
                       <Badge color="secondary" badgeContent={cart.cartItems.length}><ShoppingCartIcon /></Badge>
                     ) : (<ShoppingCartIcon />)}  
                   </IconButton>  
+                </Link>
+              </NextLink>
+              <NextLink href="/login" passHref>
+                <Link>
+                  <IconButton sx={{ marginRight: '6px' }}>
+                    <AccountCircleIcon />
+                  </IconButton>
                 </Link>
               </NextLink>
               <Switch checked={darkMode} onChange={changeDarkModeHandler} color="secondary"></Switch>

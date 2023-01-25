@@ -87,7 +87,7 @@ function CartScreen() {
             </NextLink>
           </Typography>
         </Box>) :
-        (<Grid container spacing={1}>
+        (<Grid container spacing={3}>
           <Grid item md={9} xs={12}>
             <TableContainer>
               <Table>
