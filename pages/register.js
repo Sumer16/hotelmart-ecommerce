@@ -1,6 +1,13 @@
+import { useContext, useEffect } from 'react';
+
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 
 import { useForm, Controller } from 'react-hook-form';
+
+import { useSnackbar } from 'notistack';
+import axios from 'axios';
+import jsCookies from 'js-cookie';
 
 import { 
   Button, 
@@ -16,15 +23,49 @@ import RegisterIcon from '@mui/icons-material/HowToReg';
 import Layout from '../components/Layout';
 import Form from '../components/Form';
 
+import { Store } from '../utils/Store';
+
 export default function RegisterScreen() {
+  const { state, dispatch } = useContext(Store);
+
+  const { userInfo } = state;
+
+  const router = useRouter();
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    if (userInfo) {
+      router.push('/');
+    }
+  }, [router, userInfo]);
+
   const { 
     handleSubmit, 
     control, 
     formState: { errors },
   } = useForm();
 
-  const submitHandler = async ({ name, email, password, confirmPassword }) => {
+  const submitHandler = async ({ lastName, roomNumber, password, confirmPassword }) => {
+    if(password !== confirmPassword) {
+      enqueueSnackbar("Passwords don't match", { variant: 'error' });
+      return;
+    }
 
+    try {
+      const { data } = await axios.post('/api/users/register', {
+        lastName, 
+        roomNumber, 
+        password,
+      });
+
+      dispatch({ type: 'USER_LOGIN', payload: data });
+      jsCookies.set('userInfo', JSON.stringify(data));
+
+      router.push('/');
+    } catch (err) {
+      enqueueSnackbar(err.message, { variant: 'error' });
+    }
   }
 
   return (
@@ -77,7 +118,7 @@ export default function RegisterScreen() {
                   fullWidth
                   id="roomNumber"
                   label="Room Number"
-                  inputProps={{ inputMode: 'numeric', type: 'text' }}
+                  inputProps={{ inputMode: 'numeric', pattern: '[0-9]*', type: 'number' }}
                   error={Boolean(errors.roomNumber)}
                   helperText={errors.roomNumber ? 
                     ((errors.roomNumber.type === 'maxLength') || (errors.roomNumber.type === 'minLength')) ? 

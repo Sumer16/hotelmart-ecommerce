@@ -1,7 +1,9 @@
+import { useContext } from 'react';
+
 import Head from 'next/head';
 import NextLink from 'next/link';
 
-import { useContext } from 'react';
+import jsCookies from 'js-cookie';
 
 import { createTheme } from '@mui/material/styles';
 import {
@@ -15,7 +17,8 @@ import {
   Box,
   Switch,
   Badge,
-  IconButton
+  IconButton,
+  Button
 } from '@mui/material';
 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCartOutlined';
@@ -24,11 +27,13 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import classes from '../utils/classes';
 import { Store } from '../utils/Store';
-import jsCookies from 'js-cookie';
+
 
 export default function Layout({ title, description, children }) {
   const { state, dispatch } = useContext(Store);
-  const { darkMode, cart } = state;
+
+  const { darkMode, cart, userInfo } = state;
+  console.log(userInfo);
 
   const theme = createTheme({
     components: {
@@ -89,20 +94,34 @@ export default function Layout({ title, description, children }) {
             <Box display="flex" flexWrap="wrap-reverse" justifyContent="center">
               <NextLink href="/cart" passHref>
                 <Link>
-                  <IconButton sx={{ marginRight: '6px' }}>
+                  <IconButton sx={classes.appBarButton}>
                     {cart.cartItems.length > 0 ? (
-                      <Badge color="secondary" badgeContent={cart.cartItems.length}><ShoppingCartIcon /></Badge>
+                      <Badge color="secondary" badgeContent={cart.cartItems.length}>
+                        <ShoppingCartIcon />
+                      </Badge>
                     ) : (<ShoppingCartIcon />)}  
                   </IconButton>  
                 </Link>
               </NextLink>
-              <NextLink href="/login" passHref>
-                <Link>
-                  <IconButton sx={{ marginRight: '6px' }}>
-                    <AccountCircleIcon />
-                  </IconButton>
-                </Link>
-              </NextLink>
+              {userInfo ? (
+                <NextLink href="/profile" passHref>
+                  <Link>
+                    <Button sx={classes.appBarButton}>
+                      <AccountCircleIcon  />
+                      <Typography sx={{ textTransform: 'capitalize', marginLeft: '2px' }}>
+                        Hi, {userInfo.lastName}
+                      </Typography>
+                    </Button>
+                  </Link>
+                </NextLink>) : 
+                (<NextLink href="/login" passHref>
+                  <Link>
+                    <IconButton sx={classes.appBarButton}>
+                      <AccountCircleIcon  />
+                    </IconButton>
+                  </Link>
+                </NextLink>
+              )}
               <Switch checked={darkMode} onChange={changeDarkModeHandler} color="secondary"></Switch>
             </Box>
           </Toolbar>
