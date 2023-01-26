@@ -4,7 +4,6 @@ import NextLink from 'next/link';
 import { useRouter } from 'next/router';
 
 import { useForm, Controller } from 'react-hook-form';
-
 import { useSnackbar } from 'notistack';
 import axios from 'axios';
 import jsCookies from 'js-cookie';
@@ -24,6 +23,7 @@ import Layout from '../components/Layout';
 import Form from '../components/Form';
 
 import { Store } from '../utils/Store';
+import { getError } from '../utils/error';
 
 export default function RegisterScreen() {
   const { state, dispatch } = useContext(Store);
@@ -36,7 +36,7 @@ export default function RegisterScreen() {
 
   useEffect(() => {
     if (userInfo) {
-      router.push('/');
+      router.push('/'); // push the user info onto the main screen
     }
   }, [router, userInfo]);
 
@@ -54,8 +54,8 @@ export default function RegisterScreen() {
 
     try {
       const { data } = await axios.post('/api/users/register', {
-        lastName, 
-        roomNumber, 
+        lastName,
+        roomNumber,
         password,
       });
 
@@ -64,7 +64,7 @@ export default function RegisterScreen() {
 
       router.push('/');
     } catch (err) {
-      enqueueSnackbar(err.message, { variant: 'error' });
+      enqueueSnackbar(getError(err), { variant: 'error' });
     }
   }
 

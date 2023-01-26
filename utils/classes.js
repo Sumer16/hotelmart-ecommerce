@@ -30,6 +30,7 @@ const classes = {
   appBarButton: {
     marginRight: '6px',
     color:'#ffffff',
+    textTransform: 'initial'
   },
 }
 

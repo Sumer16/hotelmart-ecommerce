@@ -1,8 +1,10 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 import Head from 'next/head';
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 
+import { useSnackbar } from 'notistack';
 import jsCookies from 'js-cookie';
 
 import { createTheme } from '@mui/material/styles';
@@ -18,22 +20,26 @@ import {
   Switch,
   Badge,
   IconButton,
-  Button
+  Button,
+  Fade,
+  Menu,
+  MenuItem
 } from '@mui/material';
 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCartOutlined';
-import LoginIcon from '@mui/icons-material/Login';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 import classes from '../utils/classes';
 import { Store } from '../utils/Store';
 
-
 export default function Layout({ title, description, children }) {
   const { state, dispatch } = useContext(Store);
 
   const { darkMode, cart, userInfo } = state;
-  console.log(userInfo);
+
+  const router = useRouter();
+
+  const { enqueueSnackbar } = useSnackbar();
 
   const theme = createTheme({
     components: {
@@ -72,6 +78,34 @@ export default function Layout({ title, description, children }) {
     jsCookies.set('darkMode', enableDarkMode ? 'ON' : 'OFF');
   }
 
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+  const loginMenuCloseHandler = (e, redirect) => {
+    setAnchorEl(null);
+
+    if (redirect) {
+      router.push(redirect);
+    }
+  };
+
+  const loginMenuClickHandler = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
+
+  const logoutClickHandler = () => {
+    setAnchorEl(null);
+    
+    dispatch({ type: 'USER_LOGOUT' });
+    
+    jsCookies.remove('userInfo');
+    jsCookies.remove('cartItems');
+
+    enqueueSnackbar("You have been successfully logged out!", { variant: 'success' });
+    
+    router.push('/');
+  };
+
   return (
     <>
       <Head>
@@ -103,25 +137,44 @@ export default function Layout({ title, description, children }) {
                   </IconButton>  
                 </Link>
               </NextLink>
-              {userInfo ? (
-                <NextLink href="/profile" passHref>
-                  <Link>
-                    <Button sx={classes.appBarButton}>
-                      <AccountCircleIcon  />
-                      <Typography sx={{ textTransform: 'capitalize', marginLeft: '2px' }}>
-                        Hi, {userInfo.lastName}
-                      </Typography>
-                    </Button>
-                  </Link>
-                </NextLink>) : 
+              {userInfo ? 
+                (<>
+                  <Button
+                    id="fade-button"
+                    aria-controls={open ? 'fade-menu' : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? 'true' : undefined}
+                    onClick={loginMenuClickHandler}
+                    sx={classes.appBarButton}
+                  >
+                    <AccountCircleIcon  />
+                    <Typography sx={{ marginLeft: '2px' }}>
+                      Hi, {userInfo.lastName}
+                    </Typography>
+                  </Button>
+                  <Menu
+                    id="fade-menu"
+                    MenuListProps={{
+                      'aria-labelledby': 'fade-button',
+                    }}
+                    anchorEl={anchorEl}
+                    open={open}
+                    keepMounted
+                    onClose={loginMenuCloseHandler}
+                    TransitionComponent={Fade}
+                  >
+                    <MenuItem onClick={(e) => loginMenuCloseHandler(e, '/profile')}>Profile</MenuItem>
+                    <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
+                  </Menu>
+                </>) : 
                 (<NextLink href="/login" passHref>
                   <Link>
                     <IconButton sx={classes.appBarButton}>
                       <AccountCircleIcon  />
                     </IconButton>
                   </Link>
-                </NextLink>
-              )}
+                </NextLink>)
+              }
               <Switch checked={darkMode} onChange={changeDarkModeHandler} color="secondary"></Switch>
             </Box>
           </Toolbar>

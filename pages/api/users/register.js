@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import config from '../../../utils/config';
 import { signToken } from '../../../utils/auth';
+import client from '../../../utils/client';
 
 const handler = nextConnect();
 
@@ -26,6 +27,17 @@ handler.post(async (req, res) => {
     },
   ];
 
+  // To check if there is an existing user present or not
+  const existUser = await client.fetch(`*[_type == "user" && roomNumber == $roomNumber][0]`, { 
+    roomNumber: req.body.roomNumber,
+  });
+
+  if (existUser) {
+    // 401 - client side authentication has failed
+    return res.status(401).send({ message: 'Room number is already registered' });
+  }
+
+  // POST our data on to Sanity
   const { data } = await axios.post(
     `https://${projectId}.api.sanity.io/v${apiVersion}/data/mutate/${dataset}?returnIds=true`,
     { 
@@ -39,6 +51,7 @@ handler.post(async (req, res) => {
     }
   );
 
+  // data that we get from user registration input fields
   const userId = data.results[0].id;
   const user = {
     _id: userId,
@@ -47,6 +60,7 @@ handler.post(async (req, res) => {
     isAdmin: false,
   };
 
+  // sign it with Sanity generated token
   const token = signToken(user);
   res.send({ ...user, token });
 });

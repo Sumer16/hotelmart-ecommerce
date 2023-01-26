@@ -1,6 +1,12 @@
+import { useContext, useEffect } from 'react';
+
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 
 import { useForm, Controller } from 'react-hook-form';
+import { useSnackbar } from 'notistack';
+import axios from 'axios';
+import jsCookies from 'js-cookie';
 
 import { 
   Button, 
@@ -16,15 +22,44 @@ import LoginIcon from '@mui/icons-material/Login';
 import Layout from '../components/Layout';
 import Form from '../components/Form';
 
+import { Store } from '../utils/Store';
+import { getError } from '../utils/error';
+
 export default function LoginScreen() {
+  const { state, dispatch } = useContext(Store);
+
+  const { userInfo } = state;
+
+  const router = useRouter();
+
+  const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    if (userInfo) {
+      router.push('/'); // push the user info onto the main screen
+    }
+  }, [router, userInfo]);
+
   const { 
     handleSubmit, 
     control, 
     formState: { errors },
   } = useForm();
 
-  const submitHandler = async ({ email, password }) => {
+  const submitHandler = async ({ roomNumber, password }) => {
+    try {
+      const { data } = await axios.post('/api/users/login', {
+        roomNumber, 
+        password,
+      });
 
+      dispatch({ type: 'USER_LOGIN', payload: data });
+      jsCookies.set('userInfo', JSON.stringify(data));
+
+      router.push('/');
+    } catch (err) {
+      enqueueSnackbar(getError(err), { variant: 'error' });
+    }
   }
 
   return (

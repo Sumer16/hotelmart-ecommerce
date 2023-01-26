@@ -70,6 +70,7 @@ function CartScreen() {
 
   const removeItemHandler = (item) => {
     dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
+    enqueueSnackbar(`${item.name} removed from the cart`, { variant: 'success' });
   };
 
   return (
