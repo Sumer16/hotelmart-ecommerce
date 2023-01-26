@@ -32,14 +32,14 @@ import { urlFor, urlForThumbnail } from '../../utils/image';
 import { Store } from '../../utils/Store';
 
 export default function ProductScreen(props) {
-  const router = useRouter();
-
-  const { slug } = props;
-
   const {
     state: { cart },
     dispatch
   } = useContext(Store);
+ 
+  const { slug } = props;
+  
+  const router = useRouter();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -74,7 +74,7 @@ export default function ProductScreen(props) {
     const { data } = await axios.get(`/api/products/${product._id}`);
 
     if (product.countInStock < quantity) {
-      enqueueSnackbar('Sorry, this product is out of stock', { variant: 'error' });
+      enqueueSnackbar("Sorry, this product is out of stock", { variant: 'error' });
       return;
     }
 

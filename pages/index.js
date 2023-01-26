@@ -15,12 +15,12 @@ import { Store } from '../utils/Store';
 import { urlForThumbnail } from '../utils/image';
 
 export default function Home() {
-  const router = useRouter();
-
   const {
     state: { cart },
     dispatch,
   } = useContext(Store);
+  
+  const router = useRouter();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -51,7 +51,7 @@ export default function Home() {
     const { data } = await axios.get(`/api/products/${product._id}`);
     
     if (product.countInStock < quantity) {
-      enqueueSnackbar('Sorry, this product is out of stock', { variant: 'error' });
+      enqueueSnackbar("Sorry, this product is out of stock", { variant: 'error' });
       return;
     }
     dispatch({

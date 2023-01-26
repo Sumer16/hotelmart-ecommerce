@@ -27,6 +27,10 @@ const classes = {
     fontWeight: 'bold',
     fontSize: '1.5rem',
   },
+  appBarButton: {
+    marginRight: '6px',
+    color:'#ffffff',
+  },
 }
 
 export default classes;
