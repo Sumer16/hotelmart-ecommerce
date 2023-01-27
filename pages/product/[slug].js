@@ -71,7 +71,7 @@ export default function ProductScreen(props) {
     // If user selected same instance of a product and add to cart we check if they are different
     // If not different we add one by default
     const quantity = existItem ? existItem.quantity + 1 : 1;
-    const { data } = await axios.get(`/api/products/${product._id}`);
+    // const { data } = await axios.get(`/api/products/${product._id}`);
 
     if (product.countInStock < quantity) {
       enqueueSnackbar("Sorry, this product is out of stock", { variant: 'error' });
