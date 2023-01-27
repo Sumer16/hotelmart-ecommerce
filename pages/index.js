@@ -3,7 +3,6 @@ import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import { useSnackbar } from 'notistack';
-import axios from 'axios';
 
 import { Alert, CircularProgress, Grid } from '@mui/material';
 

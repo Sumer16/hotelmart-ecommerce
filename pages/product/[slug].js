@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 import { useSnackbar } from 'notistack';
-import axios from 'axios';
 
 import {
   Alert,
