@@ -31,14 +31,15 @@ export default function LoginScreen() {
   const { userInfo } = state;
 
   const router = useRouter();
+  const { redirect } = router.query;
 
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (userInfo) {
-      router.push('/'); // push the user info onto the main screen
+      router.push(redirect || '/'); // push the user info onto the main screen
     }
-  }, [router, userInfo]);
+  }, [router, userInfo, redirect]);
 
   const { 
     handleSubmit, 
@@ -56,7 +57,7 @@ export default function LoginScreen() {
       dispatch({ type: 'USER_LOGIN', payload: data });
       jsCookies.set('userInfo', JSON.stringify(data));
 
-      router.push('/');
+      router.push(redirect || '/');
     } catch (err) {
       enqueueSnackbar(getError(err), { variant: 'error' });
     }
@@ -130,7 +131,7 @@ export default function LoginScreen() {
           </ListItem>
           <ListItem sx={{ display: 'flex', flexWrap: 'wrap' }}>
             <Typography marginRight={1}>Don&apos;t have an account?</Typography>
-            <NextLink href={'/register'} passHref>
+            <NextLink href={`/register?redirect=${redirect || '/'}`} passHref>
               <Link>Create an account</Link>
             </NextLink>
           </ListItem>

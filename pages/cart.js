@@ -3,6 +3,7 @@ import { useContext } from 'react';
 import NextLink from 'next/link';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/router';
 
 import { useSnackbar } from 'notistack';
 import axios from 'axios';
@@ -41,6 +42,8 @@ function CartScreen() {
     },
     dispatch,
   } = useContext(Store);
+
+  const router = useRouter();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -213,7 +216,16 @@ function CartScreen() {
                 </ListItem>
                 <Divider />
                 <ListItem>
-                  <Button fullWidth color="primary" variant="contained">Checkout</Button>
+                  <Button 
+                    onClick={() => {
+                      router.push('/payment')
+                    }} 
+                    fullWidth 
+                    color="primary" 
+                    variant="contained"
+                  >
+                    Checkout
+                  </Button>
                 </ListItem>
               </List>
             </Card>
