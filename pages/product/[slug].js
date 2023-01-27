@@ -43,7 +43,7 @@ export default function ProductScreen(props) {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const [state, setState] = useState({
+  const [ state, setState ] = useState({
     product: null, // from sanity
     loading: true,
     error: '',

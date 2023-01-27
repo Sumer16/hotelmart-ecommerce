@@ -78,14 +78,16 @@ export default function Layout({ title, description, children }) {
     jsCookies.set('darkMode', enableDarkMode ? 'ON' : 'OFF');
   }
 
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [ anchorEl, setAnchorEl ] = useState(null);
   const open = Boolean(anchorEl);
 
   const loginMenuCloseHandler = (e, redirect) => {
     setAnchorEl(null);
 
-    if (redirect) {
+    if (redirect !== 'backdropClick') {
       router.push(redirect);
+    } else {
+      return;
     }
   };
 
@@ -100,6 +102,7 @@ export default function Layout({ title, description, children }) {
     
     jsCookies.remove('userInfo');
     jsCookies.remove('cartItems');
+    jsCookies.remove('paymentMethod');
 
     enqueueSnackbar("You have been successfully logged out!", { variant: 'success' });
     
