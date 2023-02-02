@@ -50,6 +50,7 @@ export default function ProductScreen(props) {
 
   const { product, loading, error } = state;
 
+  // https://stackoverflow.com/questions/55840294/how-to-fix-missing-dependency-warning-when-using-useeffect-react-hook
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -62,6 +63,7 @@ export default function ProductScreen(props) {
       }
     };
     fetchData();
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addToCartHandler = async () => {
@@ -101,7 +103,7 @@ export default function ProductScreen(props) {
       {loading ? (<CircularProgress />)
         : error ? (<Alert variant="error">{error}</Alert>)
         : (<Box>
-          <Box sx={classes.section}>
+          <Box sx={classes.sectionFlex}>
             <Breadcrumbs>
               <NextLink href="/" passHref>
                 <Link underline="hover" sx={{ display: 'flex', alignItems: 'center' }}>

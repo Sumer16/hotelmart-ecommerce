@@ -32,8 +32,8 @@ export default function ProductItem({ product, addToCartHandler }) {
       </NextLink>
       <CardActions sx={{ display: 'flex', justifyContent: 'space-around' }}>
         <Typography sx={{ fontSize: '1.2rem' }}>${product.price}</Typography>
-        <Button size="small" color="primary" onClick={() => addToCartHandler(product)}>
-          Add to Cart <AddShoppingCartIcon />
+        <Button variant="contained" size="small" color="primary" onClick={() => addToCartHandler(product)}>
+          Add to Cart <AddShoppingCartIcon sx={{ marginLeft: '0.5rem'}} />
         </Button>
       </CardActions>
     </Card>

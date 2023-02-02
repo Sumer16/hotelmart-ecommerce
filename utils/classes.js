@@ -3,10 +3,14 @@ const classes = {
     marginTop: 2,
     minHeight: '80vh',
   },
-  section: {
+  sectionFlex: {
     marginTop: '1rem',
     marginBottom: '1rem',
     display: 'flex',
+  },
+  section: {
+    marginTop: '1rem',
+    marginBottom: '1rem',
   },
   footer: {
     marginTop: 3,
