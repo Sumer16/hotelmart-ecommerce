@@ -47,6 +47,11 @@ function CartScreen() {
 
   const { enqueueSnackbar } = useSnackbar();
 
+  const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
+  const itemsPrice = round2(cartItems.reduce((acc, c) => acc + c.price * c.quantity, 0));
+  const taxPrice = round2(itemsPrice * 0.15);
+  const totalPrice = round2(itemsPrice + taxPrice);
+
   const updateCartHandler = async (item, quantity) => {
     const { data } = await axios.get(`/api/products/${item._id}`);
 
@@ -158,6 +163,9 @@ function CartScreen() {
             <Card>
               <List>
                 <ListItem>
+                  <Typography variant="h5" fontWeight="bold">Order Summary</Typography>
+                </ListItem>
+                <ListItem>
                   <Grid container>
                     <Grid item xs={8} textAlign="left">
                       <Typography variant="subtitle1">
@@ -166,7 +174,7 @@ function CartScreen() {
                     </Grid>
                     <Grid item xs={4} textAlign="right">
                       <Typography variant="subtitle1">
-                        ${cartItems.reduce((a, c) => a + c.quantity * c.price, 0).toFixed(2)}
+                        ${itemsPrice}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -194,7 +202,7 @@ function CartScreen() {
                     </Grid>
                     <Grid item xs={6} textAlign="right">
                       <Typography variant="subtitle1">
-                        $0
+                        ${taxPrice}
                       </Typography>
                     </Grid>
                   </Grid>
@@ -204,12 +212,12 @@ function CartScreen() {
                   <Grid container>
                     <Grid item xs={6} textAlign="left">
                       <Typography variant="h6">
-                        Total
+                        <strong>Total</strong>
                       </Typography>
                     </Grid>
                     <Grid item xs={6} textAlign="right">
                       <Typography variant="h6">
-                        ${cartItems.reduce((a, c) => a + c.quantity * c.price, 0).toFixed(2)}
+                        <strong>${totalPrice}</strong>
                       </Typography>
                     </Grid>
                   </Grid>
