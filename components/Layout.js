@@ -163,7 +163,7 @@ export default function Layout({ title, description, children }) {
                     sx={classes.appBarButton}
                   >
                     <AccountCircleIcon  />
-                    <Typography sx={{ marginLeft: '2px' }} component="body1" variant="body1">
+                    <Typography sx={{ marginLeft: '2px' }} variant="body1">
                       Hi, {userInfo.lastName}
                     </Typography>
                   </Button>
