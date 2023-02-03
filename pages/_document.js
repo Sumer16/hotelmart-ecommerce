@@ -6,7 +6,7 @@ import createEmotionServer from '@emotion/server/create-instance';
 import createCache from '@emotion/cache';
 
 export default class MyDocument extends Document {
-  render () {
+  render() {
     return (
       <Html lang="en">
         <Head>
@@ -33,7 +33,8 @@ MyDocument.getInitialProps = async (ctx) => {
   
   ctx.renderPage = () =>
     originalRenderPage({
-      enhance: (App) => (props) => <App emotionCache={cache} {...props} />,
+      // eslint-disable-next-line react/display-name
+      enhanceApp: (App) => (props) => <App emotionCache={cache} {...props} />,
     });
 
   const initialProps = await Document.getInitialProps(ctx);
@@ -42,6 +43,7 @@ MyDocument.getInitialProps = async (ctx) => {
     <style
       data-emotion={`${style.key} ${style.ids.join(' ')}`}
       key={style.key}
+      // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{ __html: style.css }}
     />
   ));
@@ -52,5 +54,5 @@ MyDocument.getInitialProps = async (ctx) => {
       ...React.Children.toArray(initialProps.styles),
       ...emotionStyleTags,
     ],
-  }
-}
+  };
+};

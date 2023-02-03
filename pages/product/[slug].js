@@ -158,7 +158,7 @@ export default function ProductScreen(props) {
                 <ListItem>
                   <Grid item xs={12} md={12}>
                     <Button onClick={addToCartHandler} fullWidth variant="contained">
-                      Add To Cart <AddShoppingCartIcon />
+                      Add To Cart <AddShoppingCartIcon sx={{ marginLeft: '4px' }} />
                     </Button>
                   </Grid>
                 </ListItem>

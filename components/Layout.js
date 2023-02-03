@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import Head from 'next/head';
 import NextLink from 'next/link';
@@ -7,9 +7,7 @@ import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import jsCookies from 'js-cookie';
 
-import { createTheme } from '@mui/material/styles';
 import {
-  ThemeProvider,
   CssBaseline,
   AppBar,
   Toolbar,
@@ -23,8 +21,10 @@ import {
   Button,
   Fade,
   Menu,
-  MenuItem
+  MenuItem,
+  ThemeProvider,
 } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -72,14 +72,26 @@ export default function Layout({ title, description, children }) {
     },
   });
 
+  // Solved rehydrate issue using this -> https://www.joshwcomeau.com/react/the-perils-of-rehydration/
+  const [hasMounted, setHasMounted] = useState(false);
+
+  const [ anchorEl, setAnchorEl ] = useState(null);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
   const changeDarkModeHandler = () => {
     dispatch({ type: darkMode ? 'DARK_MODE_OFF' : 'DARK_MODE_ON' });
     const enableDarkMode = !darkMode;
     jsCookies.set('darkMode', enableDarkMode ? 'ON' : 'OFF');
   }
 
-  const [ anchorEl, setAnchorEl ] = useState(null);
   const open = Boolean(anchorEl);
+
+  if (!hasMounted) {
+    return null;
+  }
 
   const loginMenuCloseHandler = (e, redirect) => {
     setAnchorEl(null);
@@ -136,7 +148,7 @@ export default function Layout({ title, description, children }) {
                       <Badge color="secondary" badgeContent={cart.cartItems.length}>
                         <ShoppingCartIcon />
                       </Badge>
-                    ) : (<ShoppingCartIcon />)}  
+                    ) : (<ShoppingCartIcon />)}
                   </IconButton>  
                 </Link>
               </NextLink>
@@ -151,7 +163,7 @@ export default function Layout({ title, description, children }) {
                     sx={classes.appBarButton}
                   >
                     <AccountCircleIcon  />
-                    <Typography sx={{ marginLeft: '2px' }}>
+                    <Typography sx={{ marginLeft: '2px' }} component="body1" variant="body1">
                       Hi, {userInfo.lastName}
                     </Typography>
                   </Button>
@@ -166,7 +178,6 @@ export default function Layout({ title, description, children }) {
                     onClose={loginMenuCloseHandler}
                     TransitionComponent={Fade}
                   >
-                    <MenuItem onClick={(e) => loginMenuCloseHandler(e, '/profile')}>Profile</MenuItem>
                     <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
                   </Menu>
                 </>) : 
