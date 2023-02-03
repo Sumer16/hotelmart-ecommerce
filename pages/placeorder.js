@@ -118,10 +118,12 @@ function PlaceOrderScreen() {
                 </Typography>
               </ListItem>
               <ListItem>
-                <Typography>
+                <Typography variant="subtitle1">
                   Last Name: {userInfo.lastName}
                 </Typography>
-                <Typography>
+              </ListItem>
+              <ListItem>
+                <Typography variant="subtitle1">
                   Room Number: {userInfo.roomNumber}
                 </Typography>
               </ListItem>

@@ -113,7 +113,7 @@ export default function Layout({ title, description, children }) {
     <>
       <Head>
         <title>
-          {title ? `${title} | Relay Mart` : 'Relay Mart'}
+          {title ? `${title} | RelayMart` : 'RelayMart'}
         </title>
         {description && <meta name="description" content={description}></meta>}
       </Head>
@@ -124,7 +124,7 @@ export default function Layout({ title, description, children }) {
             <Box display="flex" alignItems="center">
               <NextLink href="/" passHref>
                 <Link>
-                  <Typography sx={classes.brand}>Relay Mart</Typography>
+                  <Typography sx={classes.brand}>RelayMart</Typography>
                 </Link>
               </NextLink>
             </Box>
@@ -184,7 +184,7 @@ export default function Layout({ title, description, children }) {
         </AppBar>
         <Container component="main" sx={classes.main}>{children}</Container>
         <Box component="footer" sx={classes.footer}>
-          <Typography>All rights reserved. Relay Ecommerce.</Typography>
+          <Typography variant="subtitle2">© 2023 RelayMart. All Rights Reserved.</Typography>
         </Box>
       </ThemeProvider>
     </>
