@@ -48,8 +48,9 @@ function PlaceOrderScreen() {
 
   const { enqueueSnackbar } = useSnackbar();
 
-  const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
+  const itemCount = cartItems.reduce((a, c) => a + c.quantity, 0);
 
+  const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
   const itemsPrice = round2(cartItems.reduce((acc, c) => acc + c.price * c.quantity, 0));
   const taxPrice = round2(itemsPrice * 0.15);
   const totalPrice = round2(itemsPrice + taxPrice);
@@ -113,7 +114,7 @@ function PlaceOrderScreen() {
           <Card sx={classes.section}>
             <List>
               <ListItem>
-                <Typography component="h5" variant="h5">
+                <Typography component="h5" variant="h5" fontWeight={500}>
                   Delivery Details
                 </Typography>
               </ListItem>
@@ -134,7 +135,7 @@ function PlaceOrderScreen() {
               <ListItem>
                 <Grid container>
                   <Grid item xs={8} textAlign="left">
-                    <Typography component="h5" variant="h5">
+                    <Typography component="h5" variant="h5" fontWeight={500}>
                       Payment Method
                     </Typography>
                   </Grid>
@@ -159,7 +160,7 @@ function PlaceOrderScreen() {
               <ListItem>
                 <Grid container>
                   <Grid item xs={8} textAlign="left">
-                    <Typography component="h5" variant="h5">
+                    <Typography component="h5" variant="h5" fontWeight={500}>
                       Order Items
                     </Typography>
                   </Grid>
@@ -232,7 +233,7 @@ function PlaceOrderScreen() {
                 <Grid container>
                   <Grid item xs={8}>
                     <Typography variant="subtitle1">
-                      Subtotal <Typography variant="caption">({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}items)</Typography>
+                      Subtotal <Typography variant="caption">({itemCount} {itemCount > 1 ? 'items' : 'item'})</Typography>
                     </Typography>
                   </Grid>
                   <Grid item xs={4}>
@@ -292,14 +293,14 @@ function PlaceOrderScreen() {
                   fullWidth
                   disabled={loading}
                 >
-                  Place Order
+                  Place Order {loading && (<CircularProgress size='1.5rem' sx={{ marginLeft: '4px' }} />)}
                 </Button>
               </ListItem>
-              {loading && (
+              {/* {loading && (
                 <ListItem>
                   <CircularProgress />
                 </ListItem>
-              )}
+              )} */}
             </List>
           </Card>
         </Grid>

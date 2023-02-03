@@ -47,6 +47,8 @@ function CartScreen() {
 
   const { enqueueSnackbar } = useSnackbar();
 
+  const itemCount = cartItems.reduce((a, c) => a + c.quantity, 0);
+
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
   const itemsPrice = round2(cartItems.reduce((acc, c) => acc + c.price * c.quantity, 0));
   const taxPrice = round2(itemsPrice * 0.15);
@@ -169,7 +171,7 @@ function CartScreen() {
                   <Grid container>
                     <Grid item xs={8} textAlign="left">
                       <Typography variant="subtitle1">
-                        Subtotal <Typography variant="caption">({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}items)</Typography>
+                        Subtotal <Typography variant="caption">({itemCount} {itemCount > 1 ? 'items' : 'item'})</Typography>
                       </Typography>
                     </Grid>
                     <Grid item xs={4} textAlign="right">
