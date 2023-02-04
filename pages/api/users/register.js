@@ -12,7 +12,7 @@ handler.post(async (req, res) => {
   const projectId = config.projectId;
   const dataset = config.dataset;
   const apiVersion = config.apiVersion;
-  const tokenWithWriteAccess = process.env.SANITY_AUTH_TOKEN;
+  const tokenWithWriteAccess = process.env.NEXT_PUBLIC_SANITY_AUTH_TOKEN;
   
   // update data in sanity
   const createMutations = [

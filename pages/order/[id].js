@@ -9,6 +9,7 @@ import axios from 'axios';
 
 import { 
   Alert, 
+  Button, 
   Card, 
   CircularProgress, 
   Divider, 
@@ -30,6 +31,7 @@ import Layout from '../../components/Layout';
 import classes from '../../utils/classes';
 import { Store } from '../../utils/Store';
 import { getError } from '../../utils/error';
+import getStripe from '../../utils/getStripe';
 
 // Accept state and action & check action type
 function reducer(state, action) {
@@ -89,6 +91,25 @@ function OrderScreen({ params }) {
     };
     fetchOrder();
   }, [orderId, router, userInfo]);
+
+  const handleStripePayment = async () => {
+    const stripe = await getStripe();
+
+    const response = await fetch('/api/stripe',
+    {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(orderItems),
+    });
+
+    if (response.statusCode === 500) return;
+
+    const data = await response.json();
+
+    stripe.redirectToCheckout({ sessionId: data.id });
+  }
 
   return (
     <Layout title={`Order ${orderId} | RelayMart`}>
@@ -261,22 +282,18 @@ function OrderScreen({ params }) {
                     </Grid>
                   </ListItem>
                   <Divider />
-                  {/* <ListItem>
+                  {paymentMethod === 'Stripe' ? 
+                  (<ListItem>
                     <Button
-                      onClick={placeOrderHandler}
+                      onClick={handleStripePayment}
                       variant="contained"
                       color="primary"
                       fullWidth
                       disabled={loading}
                     >
-                      Place Order
+                      Pay with Stripe {loading && (<CircularProgress size='1.5rem' sx={{ marginLeft: '4px' }} />)}
                     </Button>
-                  </ListItem>
-                  {loading && (
-                    <ListItem>
-                      <CircularProgress />
-                    </ListItem>
-                  )} */}
+                  </ListItem>) : ''}
                 </List>
               </Card>
             </Grid>
