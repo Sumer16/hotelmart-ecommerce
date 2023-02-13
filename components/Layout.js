@@ -189,7 +189,6 @@ export default function Layout({ title, description, children }) {
                   edge="start"
                   aria-label="open drawer"
                   onClick={sidebarOpenHandler}
-                  sx={classes.menuButton}
                 >
                   <MenuIcon sx={classes.navbarButton} />
                 </IconButton>

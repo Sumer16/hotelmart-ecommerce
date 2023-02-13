@@ -73,6 +73,7 @@ const classes = {
     '& :hover': {
       color: '#e8ac23'
     },
+    color: '#000000'
   },
   gridAppBar: {
     display: 'grid',
@@ -91,7 +92,11 @@ const classes = {
     gridTemplateAreas:
     `"brand icons icons"
     "search search search"`,
-  }
+  },
+  navbarButton: {
+    color: '#ffffff',
+    textTransform: 'initial',
+  },
 }
 
 export default classes;
