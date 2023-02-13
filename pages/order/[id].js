@@ -113,7 +113,7 @@ function OrderScreen({ params }) {
 
   return (
     <Layout title={`Order ${orderId} | RelayMart`}>
-      <Typography component="h1" variant="h1">
+      <Typography component="h1" variant="h1" sx={{ overflowWrap: 'break-word' }}>
         Order {orderId}
       </Typography>
 

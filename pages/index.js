@@ -4,7 +4,12 @@ import { useRouter } from 'next/router';
 
 import { useSnackbar } from 'notistack';
 
-import { Alert, CircularProgress, Grid } from '@mui/material';
+import { 
+  Alert, 
+  CircularProgress, 
+  Grid, 
+  useMediaQuery 
+} from '@mui/material';
 
 import Layout from '../components/Layout';
 import ProductItem from '../components/ProductItem';
@@ -71,10 +76,12 @@ export default function Home() {
     router.push('/cart');
   };
 
+  const isDesktop = useMediaQuery('(min-width:900px)');
+
   return <Layout>
     {loading ? (<CircularProgress />) 
       : error ? (<Alert variant="danger">{error}</Alert>) 
-      : (<Grid container justifyContent="space-evenly" spacing={3}>
+      : (<Grid container sx={isDesktop ? '' : {justifyContent: 'space-around'}} spacing={2}>
         {products.map((product) => (
           <Grid item md={4} key={product._id}>
             <ProductItem 

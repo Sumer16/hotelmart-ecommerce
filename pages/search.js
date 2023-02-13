@@ -14,7 +14,8 @@ import {
   ListItem, 
   MenuItem, 
   Select, 
-  Typography 
+  Typography, 
+  useMediaQuery
 } from '@mui/material';
 
 import Layout from '../components/Layout';
@@ -169,10 +170,12 @@ export default function SearchScreen() {
     router.push('/cart');
   };
 
+  const isDesktop = useMediaQuery('(min-width:1200px)');
+
   return (
     <Layout title="Search">
       <Grid sx={classes.section} container spacing={2}>
-        <Grid item md={3}>
+        <Grid item xs={12} md={2}>
           <List>
             <ListItem>
               <Box sx={classes.fullWidth}>
@@ -203,7 +206,7 @@ export default function SearchScreen() {
             </ListItem>
           </List>
         </Grid>
-        <Grid item md={9}>
+        <Grid item md={10}>
           <Grid container justifyContent="space-between" alignItems="center">
             <Grid item>
               {products && products.length !== 0 ? products.length : 'No'}{' '}
@@ -226,13 +229,13 @@ export default function SearchScreen() {
               </Select>
             </Grid>
           </Grid>
-          <Grid sx={classes.section} container spacing={2}>
+          <Grid sx={classes.sectionFlex} spacing={2}>
             {loading ? (
               <CircularProgress />
             ) : error ? (
               <Alert>{error}</Alert>
             ) : (
-              <Grid sx={classes.searchSectionFlex} container spacing={3}>
+              <Grid container sx={isDesktop ? '' : {justifyContent: 'space-around'}} spacing={2}>
                 {products.map((product) => (
                   <Grid item key={product.name}>
                     <ProductItem

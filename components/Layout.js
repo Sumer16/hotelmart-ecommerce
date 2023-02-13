@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 
 import { useSnackbar } from 'notistack';
 import jsCookies from 'js-cookie';
+import axios from 'axios';
 
 import {
   CssBaseline,
@@ -23,14 +24,26 @@ import {
   Menu,
   MenuItem,
   ThemeProvider,
+  List,
+  ListItem,
+  Drawer,
+  useMediaQuery,
+  ListItemText,
+  InputBase,
+  Divider,
+  Grid,
 } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
 
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCartOutlined';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 import classes from '../utils/classes';
 import { Store } from '../utils/Store';
+import { getError } from '../utils/error';
 
 export default function Layout({ title, description, children }) {
   const { state, dispatch } = useContext(Store);
@@ -77,10 +90,6 @@ export default function Layout({ title, description, children }) {
 
   const [ anchorEl, setAnchorEl ] = useState(null);
 
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
-
   const changeDarkModeHandler = () => {
     dispatch({ type: darkMode ? 'DARK_MODE_OFF' : 'DARK_MODE_ON' });
     const enableDarkMode = !darkMode;
@@ -88,10 +97,6 @@ export default function Layout({ title, description, children }) {
   }
 
   const open = Boolean(anchorEl);
-
-  if (!hasMounted) {
-    return null;
-  }
 
   const loginMenuCloseHandler = (e, redirect) => {
     setAnchorEl(null);
@@ -121,6 +126,51 @@ export default function Layout({ title, description, children }) {
     router.push('/');
   };
 
+  const [sidebarVisible, setSidebarVisible] = useState(false);
+
+  const sidebarOpenHandler = () => {
+    setSidebarVisible(true);
+  };
+
+  const sidebarCloseHandler = () => {
+    setSidebarVisible(false);
+  };
+
+  const [categories, setCategories] = useState([]);
+
+  const [query, setQuery] = useState('');
+
+  const queryChangeHandler = (e) => {
+    setQuery(e.target.value);
+  };
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data } = await axios.get(`/api/products/categories`);
+        setCategories(data);
+      } catch (err) {
+        enqueueSnackbar(getError(err), { variant: 'error' });
+      }
+    };
+    fetchCategories();
+  }, [enqueueSnackbar]);
+
+  const isDesktop = useMediaQuery('(min-width:750px)');
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    router.push(`/search?query=${query}`);
+  };
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  if (!hasMounted) {
+    return null;
+  }
+
   return (
     <>
       <Head>
@@ -133,64 +183,148 @@ export default function Layout({ title, description, children }) {
         <CssBaseline />
         <AppBar position="static" sx={classes.appbar}>
           <Toolbar sx={classes.toolbar}>
-            <Box display="flex" alignItems="center">
-              <NextLink href="/" passHref>
-                <Link>
-                  <Typography sx={classes.brand}>RelayMart</Typography>
-                </Link>
-              </NextLink>
-            </Box>
-            <Box display="flex" flexWrap="wrap-reverse" justifyContent="center">
-              <NextLink href="/cart" passHref>
-                <Link>
-                  <IconButton sx={classes.appBarButton}>
-                    {cart.cartItems.length > 0 ? (
-                      <Badge color="secondary" badgeContent={cart.cartItems.length}>
-                        <ShoppingCartIcon />
-                      </Badge>
-                    ) : (<ShoppingCartIcon />)}
-                  </IconButton>  
-                </Link>
-              </NextLink>
-              {userInfo ? 
-                (<>
-                  <Button
-                    id="fade-button"
-                    aria-controls={open ? 'fade-menu' : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={open ? 'true' : undefined}
-                    onClick={loginMenuClickHandler}
-                    sx={classes.appBarButton}
-                  >
-                    <AccountCircleIcon  />
-                    <Typography sx={{ marginLeft: '2px' }} variant="body1">
-                      Hi, {userInfo.lastName}
-                    </Typography>
-                  </Button>
-                  <Menu
-                    id="fade-menu"
-                    MenuListProps={{
-                      'aria-labelledby': 'fade-button',
-                    }}
-                    anchorEl={anchorEl}
-                    open={open}
-                    keepMounted
-                    onClose={loginMenuCloseHandler}
-                    TransitionComponent={Fade}
-                  >
-                    <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
-                  </Menu>
-                </>) : 
-                (<NextLink href="/login" passHref>
+            <Grid sx={isDesktop ? classes.gridAppBar : classes.gridAppBarMobile} container spacing={1} marginTop={1} marginBottom={1}>
+              <Box sx={{ gridArea: 'brand', display: 'flex', alignItems: 'center' }}>
+                <IconButton
+                  edge="start"
+                  aria-label="open drawer"
+                  onClick={sidebarOpenHandler}
+                  sx={classes.menuButton}
+                >
+                  <MenuIcon sx={classes.navbarButton} />
+                </IconButton>
+                <NextLink href="/" passHref>
+                  <Link>
+                    <Typography sx={classes.brand}>RelayMart</Typography>
+                  </Link>
+                </NextLink>
+              </Box>
+              <Drawer
+                anchor="left"
+                open={sidebarVisible}
+                onClose={sidebarCloseHandler}
+              >
+                <List sx={{ padding: 0 }}>
+                  <Box sx={{ backgroundColor: '#203040'}}>
+                  <ListItem sx={{ display:'flex', justifyContent: 'flex-end'}}>
+                    <IconButton
+                      aria-label="close"
+                      onClick={sidebarCloseHandler}
+                      sx={{ color: '#ffffff' }}
+                    >
+                      <CancelIcon />
+                    </IconButton>
+                  </ListItem>
+                  <ListItem>
+                    <Box>
+                      <Typography sx={{ color: '#ffffff', fontSize: '1.1rem', fontWeight: '600' }}>Browse</Typography>
+                      <NextLink href="/" passHref>
+                        <Link>
+                          <Typography variant="h6">RelayMart</Typography>
+                        </Link>
+                      </NextLink>
+                    </Box>
+                  </ListItem>
+                  </Box>
+                  <Divider />
+                  <ListItem>
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="space-between"
+                    >
+                      <Typography variant="h2">Shop By Category</Typography>
+                    </Box>
+                  </ListItem>
+                  {categories.map((category) => (
+                    <NextLink
+                      key={category}
+                      href={`/search?category=${category}`}
+                      passHref
+                    >
+                      <ListItem
+                        button
+                        component="a"
+                        onClick={sidebarCloseHandler}
+                      >
+                        <ListItemText primary={category}></ListItemText>
+                      </ListItem>
+                    </NextLink>
+                  ))}
+                </List>
+              </Drawer>
+              <Box sx={{ gridArea: 'search' }}>
+                <form onSubmit={submitHandler}>
+                  <Box sx={classes.searchForm}>
+                    <InputBase
+                      name="query"
+                      sx={classes.searchInput}
+                      placeholder="Search products"
+                      onChange={queryChangeHandler}
+                      fullWidth
+                    />
+                    <IconButton
+                      type="submit"
+                      sx={classes.searchButton}
+                      aria-label="search"
+                    >
+                      <SearchIcon />
+                    </IconButton>
+                  </Box>
+                </form>
+              </Box>
+              <Box sx={{ gridArea: 'icons', justifySelf: 'end' }} display="flex" flexWrap="wrap-reverse" justifyContent="center">
+                <NextLink href="/cart" passHref>
                   <Link>
                     <IconButton sx={classes.appBarButton}>
-                      <AccountCircleIcon  />
-                    </IconButton>
+                      {cart.cartItems.length > 0 ? (
+                        <Badge color="secondary" badgeContent={cart.cartItems.length}>
+                          <ShoppingCartIcon />
+                        </Badge>
+                      ) : (<ShoppingCartIcon />)}
+                    </IconButton>  
                   </Link>
-                </NextLink>)
-              }
-              <Switch checked={darkMode} onChange={changeDarkModeHandler} color="secondary"></Switch>
-            </Box>
+                </NextLink>
+                {userInfo ? 
+                  (<>
+                    <Button
+                      id="fade-button"
+                      aria-controls={open ? 'fade-menu' : undefined}
+                      aria-haspopup="true"
+                      aria-expanded={open ? 'true' : undefined}
+                      onClick={loginMenuClickHandler}
+                      sx={classes.appBarButton}
+                    >
+                      <AccountCircleIcon  />
+                      <Typography sx={{ marginLeft: '2px' }} variant="body1">
+                        Hi, {userInfo.lastName}
+                      </Typography>
+                    </Button>
+                    <Menu
+                      id="fade-menu"
+                      MenuListProps={{
+                        'aria-labelledby': 'fade-button',
+                      }}
+                      anchorEl={anchorEl}
+                      open={open}
+                      keepMounted
+                      onClose={loginMenuCloseHandler}
+                      TransitionComponent={Fade}
+                    >
+                      <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
+                    </Menu>
+                  </>) : 
+                  (<NextLink href="/login" passHref>
+                    <Link>
+                      <IconButton sx={classes.appBarButton}>
+                        <AccountCircleIcon  />
+                      </IconButton>
+                    </Link>
+                  </NextLink>)
+                }
+                <Switch checked={darkMode} onChange={changeDarkModeHandler} color="secondary"></Switch>
+              </Box>
+            </Grid>
           </Toolbar>
         </AppBar>
         <Container component="main" sx={classes.main}>{children}</Container>
