@@ -5,7 +5,7 @@ import {schemaTypes} from './schemas'
 
 export default defineConfig({
   name: 'default',
-  title: 'relay-ecommerce',
+  title: 'hotelmart-ecommerce',
 
   projectId: 'urc84mnc',
   dataset: 'production',
