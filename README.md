@@ -10,6 +10,7 @@ This is a fully functional e-commerce website that allows users to login, add/de
 - User authentication & Product management using [Sanity Headless CMS](https://sanity.io)
 - Shopping cart functionality using React Context API
 - Payment processing using [Stripe Payment API](https://stripe.com/)
+- Dark mode available
 
 ## Installation
 
