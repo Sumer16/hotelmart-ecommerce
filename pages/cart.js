@@ -30,6 +30,7 @@ import {
 } from '@mui/material';
 
 import DeleteIcon from '@mui/icons-material/Delete';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import Layout from '../components/Layout';
 
@@ -85,9 +86,16 @@ function CartScreen() {
 
   return (
     <Layout title="Cart">
-      <Typography component="h4" variant="h4">
-        Shopping Cart
-      </Typography>
+      <Box sx={{ display: 'flex' }}>
+        <NextLink href="/" passHref>
+            <Link>
+              <IconButton color="secondary">
+                <ArrowBackIcon />
+              </IconButton>  
+            </Link>
+        </NextLink>
+        <Typography sx={{ marginLeft: '1rem' }} component="h4" variant="h4">Shopping Cart</Typography>
+      </Box>
       {cartItems.length === 0 ?
         (<Box>
           <Typography>Cart is empty.{' '}
