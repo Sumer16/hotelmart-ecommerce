@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 
 import { useSnackbar } from 'notistack';
 
@@ -24,7 +24,7 @@ export default function Home() {
     dispatch,
   } = useContext(Store);
   
-  const router = useRouter();
+  // const router = useRouter();
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -73,7 +73,7 @@ export default function Home() {
     enqueueSnackbar(`${product.name} added to the cart`, {
       variant: 'success',
     });
-    router.push('/cart');
+    // router.push('/cart');
   };
 
   const isDesktop = useMediaQuery('(min-width:900px)');

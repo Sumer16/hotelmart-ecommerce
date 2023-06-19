@@ -78,6 +78,11 @@ export default function PaymentScreen() {
                   control={<Radio />}
                 />
                 <FormControlLabel
+                  label="PayPal"
+                  value="PayPal"
+                  control={<Radio />}
+                />
+                <FormControlLabel
                   label="Cash (pay at reception)"
                   value="Cash"
                   control={<Radio />}

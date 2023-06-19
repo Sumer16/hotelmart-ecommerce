@@ -3,6 +3,7 @@
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import { SnackbarProvider } from 'notistack';
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 
 import { StoreProvider } from '../utils/Store';
 
@@ -13,7 +14,9 @@ export default function App({ Component, pageProps, emotionCache = clientSideEmo
     <CacheProvider value={emotionCache}>
       <SnackbarProvider anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
         <StoreProvider>
-          <Component {...pageProps} />
+          <PayPalScriptProvider deferLoading={true}>
+            <Component {...pageProps} />
+          </PayPalScriptProvider>
         </StoreProvider>
       </SnackbarProvider>
     </CacheProvider>
