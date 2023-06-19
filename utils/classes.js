@@ -1,7 +1,7 @@
 const classes = {
   main: {
     marginTop: 2,
-    minHeight: '80vh',
+    minHeight: '80dvh',
   },
   sectionFlex: {
     marginTop: '1rem',
@@ -97,6 +97,18 @@ const classes = {
     color: '#ffffff',
     textTransform: 'initial',
   },
+  success: {
+    minHeight: '80dvh', 
+    display: 'flex', 
+    justifyContent: 'center', 
+    alignItems: 'center',
+  },
+  successCard: {
+    minHeight: '30tvh', 
+    textAlign: 'center', 
+    borderRadius: '1rem', 
+    backgroundColor: '#e8e8e8',
+  }
 }
 
 export default classes;

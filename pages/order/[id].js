@@ -157,7 +157,7 @@ function OrderScreen({ params }) {
         );
         dispatch({ type: 'PAY_SUCCESS', payload: data });
         enqueueSnackbar('Order is paid!', { variant: 'success' });
-        // router.push('/success');
+        router.push('/success');
       } catch (err) {
         dispatch({ type: 'PAY_FAIL', payload: getError(err) });
         enqueueSnackbar(getError(err), { variant: 'error' });
@@ -395,10 +395,6 @@ function OrderScreen({ params }) {
                       </ListItem>
                     )
                   }
-                  {paymentMethod === 'Stripe' ? 
-                  (<ListItem>
-
-                  </ListItem>) : ''}
                 </List>
               </Card>
             </Grid>
