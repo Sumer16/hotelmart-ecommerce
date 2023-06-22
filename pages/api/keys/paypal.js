@@ -1,8 +1,8 @@
-import nc from 'next-connect';
+import nextConnect from 'next-connect';
 
 import { isAuth } from '../../../utils/auth';
 
-const handler = nc();
+const handler = nextConnect();
 handler(isAuth);
 
 handler.get(async (req, res) => {

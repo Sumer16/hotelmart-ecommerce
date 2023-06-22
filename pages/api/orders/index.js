@@ -21,7 +21,7 @@ handler.post(async (req, res) => {
         {
           create: {
             _type: 'order',
-            createdAt: new Date().toISOString(),
+            createdAt: new Date().toString(),
             ...req.body,
             userLastName: req.user.lastName,
             user: {

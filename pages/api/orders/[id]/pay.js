@@ -1,11 +1,11 @@
-import nc from 'next-connect';
+import nextConnect from 'next-connect';
 
 import axios from 'axios';
 
 import { isAuth } from '../../../../utils/auth';
 import config from '../../../../utils/config';
 
-const handler = nc();
+const handler = nextConnect();
 
 handler.use(isAuth);
 

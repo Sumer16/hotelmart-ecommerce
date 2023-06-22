@@ -296,11 +296,6 @@ function PlaceOrderScreen() {
                   Place Order {loading && (<CircularProgress size='1.5rem' sx={{ marginLeft: '4px' }} />)}
                 </Button>
               </ListItem>
-              {/* {loading && (
-                <ListItem>
-                  <CircularProgress />
-                </ListItem>
-              )} */}
             </List>
           </Card>
         </Grid>

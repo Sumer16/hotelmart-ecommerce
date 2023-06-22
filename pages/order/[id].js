@@ -372,7 +372,8 @@ function OrderScreen({ params }) {
                                 createOrder={createOrder}
                                 onApprove={onApprove}
                                 onError={onError}
-                              ></PayPalButtons>) : (
+                              ></PayPalButtons>) 
+                              : paymentMethod === 'Stripe' ? (
                               <Button
                                 onClick={handleStripePayment}
                                 variant="contained"
@@ -388,7 +389,7 @@ function OrderScreen({ params }) {
                                     sx={{ marginLeft: '4px' }} 
                                   />)
                                 }
-                              </Button>)}
+                              </Button>) : ''}
                             </Box>
                           )
                         }

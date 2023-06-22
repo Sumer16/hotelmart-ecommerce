@@ -52,7 +52,7 @@ export default function PaymentScreen() {
       dispatch({ type: 'SAVE_PAYMENT_METHOD', payload: paymentMethod });
       jsCookies.set('paymentMethod', paymentMethod);
       
-      router.push('/placeorder');
+      router.push('/place-order');
     }
   }
 

@@ -3,14 +3,14 @@
 
 ## About HotelMart
 
-This is a fully functional e-commerce website that allows users to login, add/delete products to/from cart, view products in detail, and process payment for products. It has been built using React, Next.js, React MUI, Sanity (Headless CMS), and Stripe (Payment API), and deployed on Vercel.
+This is a fully functional e-commerce website that allows users to login, add/delete products to/from cart, view products in detail, and process payment for products. It has been built using React, Next.js, React MUI, Sanity (Headless CMS), and Stripe & PayPal (Payment APIs), and deployed on Vercel.
 
 ## Featues
 
 - Server-rendered pages using [Next.js](https://nextjs.org)
 - User authentication & Product management using [Sanity Headless CMS](https://sanity.io)
 - Shopping cart functionality using React Context API
-- Payment processing using [Stripe Payment API](https://stripe.com/)
+- Payment processing using [Stripe](https://stripe.com/) & [PayPal](https://paypal.com) Payment APIs
 - Dark mode available
 
 ## Installation

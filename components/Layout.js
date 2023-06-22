@@ -19,7 +19,6 @@ import {
   Switch,
   Badge,
   IconButton,
-  Button,
   Fade,
   Menu,
   MenuItem,
@@ -286,7 +285,7 @@ export default function Layout({ title, description, children }) {
                 </NextLink>
                 {userInfo ? 
                   (<>
-                    <Button
+                    <IconButton
                       id="fade-button"
                       aria-controls={open ? 'fade-menu' : undefined}
                       aria-haspopup="true"
@@ -295,10 +294,7 @@ export default function Layout({ title, description, children }) {
                       sx={classes.appBarButton}
                     >
                       <AccountCircleIcon  />
-                      <Typography sx={{ marginLeft: '2px' }} variant="body1">
-                        Hi, {userInfo.lastName}
-                      </Typography>
-                    </Button>
+                    </IconButton>
                     <Menu
                       id="fade-menu"
                       MenuListProps={{
@@ -310,6 +306,18 @@ export default function Layout({ title, description, children }) {
                       onClose={loginMenuCloseHandler}
                       TransitionComponent={Fade}
                     >
+                      <MenuItem>
+                        <Typography sx={{ marginLeft: '2px' }} variant="body1">
+                          Hi, {userInfo.lastName}
+                        </Typography>
+                      </MenuItem>
+                      <MenuItem
+                        onClick={(e) =>
+                          loginMenuCloseHandler(e, '/order-history')
+                        }
+                      >
+                        Order History
+                      </MenuItem>
                       <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
                     </Menu>
                   </>) : 
