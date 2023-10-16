@@ -172,7 +172,7 @@ function OrderScreen({ params }) {
   const handleStripePayment = async () => {
     const stripe = await getStripe();
 
-    const response = await fetch('/api/stripe',
+    const response = await fetch('/api/keys/stripe',
     {
       method: 'POST',
       headers: {
