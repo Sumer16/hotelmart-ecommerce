@@ -49,7 +49,7 @@ SANITY_DATASET=your_sanity_dataset
 JWT_WEB_SECRET=your_secret_key
 
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
-STRIPE_SECRET_KEY=your_stripe_secret_key
+NEXT_PUBLIC_STRIPE_SECRET_KEY=your_stripe_secret_key
 
 PAYPAL_CLIENT_ID=your_paypal_client_id
 ```
