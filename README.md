@@ -1,7 +1,9 @@
-# [HotelMart](https://hotelmart.vercel.app)
+# [HotelMart Ecommerce](https://hotelmart.vercel.app)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](/LICENSE)
 
 ![HotelMart Landing Page](/hotelmart.png)
+
+### NOTE: This project is no longer maintained.
 
 ## About HotelMart
 
