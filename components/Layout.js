@@ -336,7 +336,7 @@ export default function Layout({ title, description, children }) {
         </AppBar>
         <Container component="main" sx={classes.main}>{children}</Container>
         <Box component="footer" sx={classes.footer}>
-          <Typography variant="subtitle2">© 2023 HotelMart. All Rights Reserved.</Typography>
+          <Typography variant="subtitle2">© 2024 HotelMart. All Rights Reserved.</Typography>
         </Box>
       </ThemeProvider>
     </>
